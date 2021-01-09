@@ -12,19 +12,18 @@ def get_jobs(page, token):
 
 
 def main():
-    token = '6c4f3844137d6964fd40583b8cc20e12ebad94ef'
+    id = 1
     page = 1
     conn = sqlite3.connect("db.sqlite3")
     c = conn.cursor()
-    c.execute('CREATE TABLE jobs (title CHAR, detail CHAR)')
     while True:
         jobs = get_jobs(page, token)
         if jobs != '':
             for job in jobs:
-                print(job)
                 title = job['title']
                 detail = job['body']
-            c.execute('INSERT INTO jobs VALUES (?, ?)', (title, detail))
+                c.execute('INSERT INTO jobs VALUES (?, ?, ?)', (id, title, detail))
+                id += 1
         else:
             break
         page += 1
